@@ -10,11 +10,19 @@ public class Movement : MonoBehaviour
 
     private Vector2 _velocity;
 
+    private Vector2 _direction;
+
     private Vector2 _lastVelocity = Vector2.zero;
 
     public float VerticalMovement { get; set; }
 
     public float HorizontalMovement { get; set; }
+
+    public void SetDirection(Vector2 direction)
+    {
+        _direction = direction;
+        _direction.Normalize();
+    }
 
     void Start()
     {
@@ -24,10 +32,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-
-        _velocity = new Vector2(x, y) * speed;
+        _velocity = _direction * speed;
 
         if (_velocity.magnitude > 0)
         {

@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -79,6 +80,18 @@ public class PathGrid : MonoBehaviour
         return null;
     }
 
+    public Vector2? GetNodeWorldPosition(PathNode node)
+    {
+        GetNodePosition(node, out int x, out int y);
+
+        if (x != -1)
+        {
+            return GetWorldPosition(x, y);
+        }
+
+        return null;
+    }
+
     public Vector3 GetWorldPosition(int x, int y, float worldZ)
     {
         var worldPos = GetWorldPosition(x, y);
@@ -120,25 +133,16 @@ public class PathGrid : MonoBehaviour
         return !IsWithinGrid(x, y) ? null : new Vector2Int(x, y);
     }
 
-    public Vector2Int GetRandomGridPosition()
+    public PathNode GetRandomNode(bool onlyWalkable)
     {
-        var posX = UnityEngine.Random.Range(0, _gridSize.x - 1);
-        var posY = UnityEngine.Random.Range(0, _gridSize.y - 1);
+        int index;
 
-        return new Vector2Int(posX, posY);
-    }
-
-    public PathNode GetRandomNode(bool onlyWalkable = true)
-    {
-        PathNode randomNode;
         do
         {
-            var randomPos = GetRandomGridPosition();
-            randomNode = GetNode(randomPos.x, randomPos.y);
+            index = UnityEngine.Random.Range(0, _gridArray.Length);
+        } while (onlyWalkable && !_gridArray[index].IsWalkable);
 
-        } while (onlyWalkable && (randomNode == null || !randomNode.IsWalkable));
-
-        return randomNode;
+        return _gridArray[index];
     }
 
     public PathNode TopNeighbour(int x, int y)
@@ -182,6 +186,21 @@ public class PathGrid : MonoBehaviour
         }
 
         return gridY * _gridSize.x + gridX;
+    }
+
+    private void GetNodePosition(PathNode pathNode, out int x, out int y)
+    {
+        var index = Array.IndexOf(_gridArray, pathNode);
+
+        if (index == -1)
+        {
+            x = -1;
+            y = -1;
+        } else 
+        {
+            x = index % _gridSize.x;
+            y = index / _gridSize.x;
+        }
     }
 
     private void CreateNodes()

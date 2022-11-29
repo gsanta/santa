@@ -2,7 +2,7 @@
 
 public class Character : MonoBehaviour
 {
-    Vector2 GetPosition()
+    public Vector2 GetPosition()
     {
         return transform.position;
     }

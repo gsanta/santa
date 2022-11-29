@@ -1,15 +1,12 @@
 ﻿
 
-public abstract class GameEntityState
+using UnityEngine;
+
+public abstract class GameEntityState : MonoBehaviour
 {
-    private string _stateName;
+    protected string _stateName;
 
-    private bool _isActive;
-
-    protected GameEntityState(string stateName)
-    {
-        _stateName = stateName;
-    }
+    [SerializeField] private bool _isActive = false;
 
     public string GetName()
     {
