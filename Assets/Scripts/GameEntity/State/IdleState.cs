@@ -8,12 +8,13 @@ public class IdleState : GameEntityState
 
     private void Start()
     {
+        _stateName = Name;
         _character = GetComponent<Character>();
     }
 
     protected override void OnActivated()
     {
-        Invoke("Finish", 5.0f);
+        Invoke("Finish", 10.0f);
     }
 
     protected override void OnDeactivated()

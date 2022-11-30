@@ -37,36 +37,26 @@ public class RoamState : GameEntityState
             return;
         }
 
-        if (IsDestinationReached())
+        if (IsPathFinished())
         {
-            if (_path.Count <= 1)
-            {
-                Finish();
-                //FindTarget();
-            } else
+            Finish();
+        } else
+        {
+            if (IsNextPathPointReached())
             {
                 _path.RemoveAt(0);
             }
-        }
 
-        if (_path.Count > 0)
-        {
             _movement.SetDirection(_path[0] - _character.GetPosition());
         }
     }
 
-    private void FindTarget()
+    private bool IsPathFinished()
     {
-        var position = _character.GetPosition();
-        var startNode = _pathGrid.GetNodeAtWorldPos(position);
-        var targetNode = _pathGrid.GetRandomNode(true);
-
-        var nodes = _pathFinding.FindPath(_pathGrid, startNode, targetNode);
-
-        _path = nodes.Select((node) => _pathGrid.GetNodeWorldPosition(node).Value).ToList();
+        return _path.Count == 0 || (IsNextPathPointReached() && _path.Count == 1);
     }
 
-    private bool IsDestinationReached()
+    private bool IsNextPathPointReached()
     {
         if (_path.Count == 0)
         {
@@ -85,15 +75,24 @@ public class RoamState : GameEntityState
         FindTarget();
     }
 
-    protected override void OnDeactivated()
+    private void FindTarget()
     {
+        var position = _character.GetPosition();
+        var startNode = _pathGrid.GetNodeAtWorldPos(position);
+        var targetNode = _pathGrid.GetRandomNode(true);
+
+        var nodes = _pathFinding.FindPath(_pathGrid, startNode, targetNode);
+
+        _path = nodes.Select((node) => _pathGrid.GetNodeWorldPosition(node).Value).ToList();
     }
 
     private void Finish()
     {
-        var nextState = Array.Find(_character.States, (state) => state.GetName() == IdleState.Name);
-
+        _path = new();
+        _movement.SetDirection(new Vector2(0, 0));
         SetIsActive(false);
+
+        var nextState = Array.Find(_character.States, (state) => state.GetName() == IdleState.Name);
         nextState.SetIsActive(true);
     }
 }

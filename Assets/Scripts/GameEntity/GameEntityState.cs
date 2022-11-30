@@ -16,6 +16,14 @@ public abstract class GameEntityState : MonoBehaviour
     public void SetIsActive(bool isActive)
     {
         _isActive = isActive;
+
+        if (_isActive)
+        {
+            OnActivated();
+        } else
+        {
+            OnDeactivated();
+        }
     }
 
     public bool IsActive()
@@ -23,7 +31,7 @@ public abstract class GameEntityState : MonoBehaviour
         return _isActive;
     }
 
-    protected abstract void OnActivated(); 
+    protected virtual void OnActivated() { }
 
-    protected abstract void OnDeactivated();
+    protected virtual void OnDeactivated() { }
 }
