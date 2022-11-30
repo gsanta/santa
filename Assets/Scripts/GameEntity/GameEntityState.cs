@@ -22,4 +22,8 @@ public abstract class GameEntityState : MonoBehaviour
     {
         return _isActive;
     }
+
+    protected abstract void OnActivated(); 
+
+    protected abstract void OnDeactivated();
 }

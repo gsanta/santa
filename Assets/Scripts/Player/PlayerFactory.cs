@@ -9,7 +9,7 @@ public class PlayerFactory : MonoBehaviour
 
     private void Start()
     {
-        Create();
+        //Create();
     }
 
     public Player Create()
@@ -19,7 +19,6 @@ public class PlayerFactory : MonoBehaviour
         player.AddComponent<Movement>();
         
         var playerInput = player.AddComponent<PlayerInput>();
-        playerInput.Construct(player);
 
         return player;
     }

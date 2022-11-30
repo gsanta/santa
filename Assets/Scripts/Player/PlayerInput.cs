@@ -5,14 +5,16 @@ public class PlayerInput : MonoBehaviour
 {
     private Player _player;
 
-    public void Construct(Player player)
+    private void Start()
     {
-        _player = player;
+        _player = GetComponent<Player>();
     }
 
     private void Update()
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+
+        _player.Movement.SetDirection(new Vector2(x, y));
     }
 }

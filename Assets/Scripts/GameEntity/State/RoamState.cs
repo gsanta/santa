@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class RoamState : GameEntityState
         _pathGrid = Services.GetInstance().GetPathGrid();
 
         FindTarget();
+        SetIsActive(true);
     }
 
     private void Update()
@@ -39,7 +41,8 @@ public class RoamState : GameEntityState
         {
             if (_path.Count <= 1)
             {
-                FindTarget();
+                Finish();
+                //FindTarget();
             } else
             {
                 _path.RemoveAt(0);
@@ -75,5 +78,22 @@ public class RoamState : GameEntityState
         }
 
         return false;
+    }
+
+    protected override void OnActivated()
+    {
+        FindTarget();
+    }
+
+    protected override void OnDeactivated()
+    {
+    }
+
+    private void Finish()
+    {
+        var nextState = Array.Find(_character.States, (state) => state.GetName() == IdleState.Name);
+
+        SetIsActive(false);
+        nextState.SetIsActive(true);
     }
 }

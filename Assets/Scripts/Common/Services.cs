@@ -1,13 +1,13 @@
 ﻿
 using UnityEngine;
 
-public class Services : MonoBehaviour
+public class Services
 {
-    private static Services _instance;
+    private static Services _instance = new Services();
 
     private PathGrid _pathGrid;
 
-    private void Awake()
+    private Services()
     {
         _instance = this;
     }
