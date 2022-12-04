@@ -1,12 +1,11 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoamState : GameEntityState
+public class ChaseState : GameEntityState
 {
-    public static string Name = "Roam";
+    public static string Name = "Chase";
 
     private PathFinding _pathFinding = new PathFinding();
 
@@ -18,6 +17,7 @@ public class RoamState : GameEntityState
 
     private List<Vector2> _path = new();
 
+
     private void Start()
     {
         _stateName = Name;
@@ -26,6 +26,11 @@ public class RoamState : GameEntityState
         _pathGrid = Services.GetInstance().GetPathGrid();
 
         FindTarget();
+    }
+
+    protected override void OnActivated()
+    {
+        InvokeRepeating("FindTarget", 0, 3f);
     }
 
     private void Update()
@@ -38,7 +43,8 @@ public class RoamState : GameEntityState
         if (IsPathFinished())
         {
             Finish();
-        } else
+        }
+        else
         {
             if (IsNextPathPointReached())
             {
@@ -61,23 +67,21 @@ public class RoamState : GameEntityState
             return true;
         }
 
-        if (Vector2.Distance(_character.GetPosition(), _path[0]) < 0.2f) {
+        if (Vector2.Distance(_character.GetPosition(), _path[0]) < 0.2f)
+        {
             return true;
         }
 
         return false;
     }
 
-    protected override void OnActivated()
-    {
-        FindTarget();
-    }
-
     private void FindTarget()
     {
         var position = _character.GetPosition();
         var startNode = _pathGrid.GetNodeAtWorldPos(position);
-        var targetNode = _pathGrid.GetRandomNode(true);
+
+        var playerPosition = CharacterStore.GetInstance().GetPlayer().GetPosition();
+        var targetNode = _pathGrid.GetNodeAtWorldPos(playerPosition);
 
         var nodes = _pathFinding.FindPath(_pathGrid, startNode, targetNode);
 
@@ -86,11 +90,11 @@ public class RoamState : GameEntityState
 
     private void Finish()
     {
-        _path = new();
-        _movement.SetDirection(new Vector2(0, 0));
-        SetIsActive(false);
+        //_path = new();
+        //_movement.SetDirection(new Vector2(0, 0));
+        //SetIsActive(false);
 
-        var nextState = Array.Find(_character.States, (state) => state.GetName() == IdleState.Name);
-        nextState.SetIsActive(true);
+        //var nextState = Array.Find(_character.States, (state) => state.GetName() == IdleState.Name);
+        //nextState.SetIsActive(true);
     }
 }

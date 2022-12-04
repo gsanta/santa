@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Guy_Idle_Up
+  m_Name: Santa_Hook_Right_Left
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -1322808104, guid: 35dc4f521ee438247a6687d50b9816ab, type: 3}
+      value: {fileID: 703392820, guid: 1ceff61f4b1066e44948eebd72288d59, type: 3}
     - time: 1
-      value: {fileID: 521113805, guid: 35dc4f521ee438247a6687d50b9816ab, type: 3}
+      value: {fileID: 703392820, guid: 1ceff61f4b1066e44948eebd72288d59, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -43,8 +43,8 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
     pptrCurveMapping:
-    - {fileID: -1322808104, guid: 35dc4f521ee438247a6687d50b9816ab, type: 3}
-    - {fileID: 521113805, guid: 35dc4f521ee438247a6687d50b9816ab, type: 3}
+    - {fileID: 703392820, guid: 1ceff61f4b1066e44948eebd72288d59, type: 3}
+    - {fileID: 703392820, guid: 1ceff61f4b1066e44948eebd72288d59, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class IdleState : GameEntityState
 {
@@ -6,7 +7,7 @@ public class IdleState : GameEntityState
 
     private Character _character;
 
-    private void Start()
+    private void Awake()
     {
         _stateName = Name;
         _character = GetComponent<Character>();
@@ -24,7 +25,18 @@ public class IdleState : GameEntityState
 
     private void Finish()
     {
-        var nextState = Array.Find(_character.States, (state) => state.GetName() == RoamState.Name);
+        var player = CharacterStore.GetInstance().GetPlayer();
+
+        GameEntityState nextState = null;
+
+        if (Vector2.Distance(player.GetPosition(), _character.GetPosition()) < 2.0f)
+        {
+            nextState = Array.Find(_character.States, (state) => state.GetName() == FightState.Name);
+        } else
+        {
+            nextState = Array.Find(_character.States, (state) => state.GetName() == RoamState.Name);
+        }
+
 
         SetIsActive(false);
         nextState.SetIsActive(true);

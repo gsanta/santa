@@ -8,6 +8,14 @@ public abstract class GameEntityState : MonoBehaviour
 
     [SerializeField] private bool _isActive = false;
 
+    private void Start()
+    {
+        if (_isActive)
+        {
+            OnActivated();
+        }
+    }
+
     public string GetName()
     {
         return _stateName;
@@ -31,7 +39,7 @@ public abstract class GameEntityState : MonoBehaviour
         return _isActive;
     }
 
-    protected virtual void OnActivated() { }
+    protected virtual void OnActivated() { }    
 
     protected virtual void OnDeactivated() { }
 }
