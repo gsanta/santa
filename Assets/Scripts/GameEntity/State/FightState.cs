@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FightState : GameEntityState
+public class FightState : CharacterState
 {
     public static string Name = "Fight";
 

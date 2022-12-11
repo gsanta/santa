@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class IdleState : GameEntityState
+public class IdleState : CharacterState
 {
     public static string Name = "Idle";
 
@@ -11,23 +11,16 @@ public class IdleState : GameEntityState
     {
         _stateName = Name;
         _character = GetComponent<Character>();
-    }
-
-    protected override void OnActivated()
-    {
-        Invoke("Finish", 10.0f);
-    }
-
-    protected override void OnDeactivated()
-    {
-
+    
+        AddStateTransition(new RoamStateTransition(_character));
+        AddStateTransition(new StartChaseTransition(_character));
     }
 
     private void Finish()
     {
         var player = CharacterStore.GetInstance().GetPlayer();
 
-        GameEntityState nextState = null;
+        CharacterState nextState = null;
 
         if (Vector2.Distance(player.GetPosition(), _character.GetPosition()) < 2.0f)
         {

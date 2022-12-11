@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ChaseState : GameEntityState
+public class ChaseState : CharacterState
 {
     public static string Name = "Chase";
 
@@ -18,12 +18,14 @@ public class ChaseState : GameEntityState
     private List<Vector2> _path = new();
 
 
-    private void Start()
+    protected override void OnStarted()
     {
         _stateName = Name;
         _character = GetComponent<Character>();
         _movement = GetComponent<Movement>();
         _pathGrid = Services.GetInstance().GetPathGrid();
+
+        AddStateTransition(new EndChaseTransition(_character));
 
         FindTarget();
     }
@@ -33,7 +35,7 @@ public class ChaseState : GameEntityState
         InvokeRepeating("FindTarget", 0, 3f);
     }
 
-    private void Update()
+    protected override void OnUpdated()
     {
         if (!IsActive())
         {

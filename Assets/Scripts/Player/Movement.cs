@@ -78,15 +78,9 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_velocity.magnitude == 0 && _isMoving)
-        {
-            _rigidBody.AddForce(_lastVelocity * -speed * 3, ForceMode2D.Force);
-            _isMoving = false;
-        }
-
         if (_isMoving)
         {
-            _rigidBody.AddForce(_velocity * speed, ForceMode2D.Force);
+            _rigidBody.AddForce(_velocity * speed, ForceMode2D.Impulse);
         }
     }
 }

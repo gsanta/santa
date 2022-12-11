@@ -1,10 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoamState : GameEntityState
+public class RoamState : CharacterState
 {
     public static string Name = "Roam";
 
@@ -18,26 +16,29 @@ public class RoamState : GameEntityState
 
     private List<Vector2> _path = new();
 
-    private void Start()
+    protected override void OnStarted()
     {
         _stateName = Name;
         _character = GetComponent<Character>();
         _movement = GetComponent<Movement>();
         _pathGrid = Services.GetInstance().GetPathGrid();
 
+        AddStateTransition(new IdleStateTransition(_character));
+        AddStateTransition(new StartChaseTransition(_character));
+
         FindTarget();
     }
 
-    private void Update()
+    protected override void OnUpdated()
     {
-        if (!IsActive())
+        if (!IsActive() || _isEnded)
         {
             return;
         }
 
         if (IsPathFinished())
         {
-            Finish();
+            _isEnded = true;
         } else
         {
             if (IsNextPathPointReached())
@@ -82,15 +83,5 @@ public class RoamState : GameEntityState
         var nodes = _pathFinding.FindPath(_pathGrid, startNode, targetNode);
 
         _path = nodes.Select((node) => _pathGrid.GetNodeWorldPosition(node).Value).ToList();
-    }
-
-    private void Finish()
-    {
-        _path = new();
-        _movement.SetDirection(new Vector2(0, 0));
-        SetIsActive(false);
-
-        var nextState = Array.Find(_character.States, (state) => state.GetName() == IdleState.Name);
-        nextState.SetIsActive(true);
     }
 }
